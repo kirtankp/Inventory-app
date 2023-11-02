@@ -49,9 +49,12 @@ export default function Home() {
     // Handle login logic here (e.g., send data to the server)
     try {
       const response = await axios.post("http://localhost:5001/user/otp", otpData);
-      if (response.data['user']) {
+      if (response.data['role'] === 'admin') {
         console.log("Login success", response.data);
-        router.push("/dashboard");
+        router.push("/admin/dashboard");
+      }else if (response.data['role'] === 'employee') {
+        console.log("Login success", response.data);
+        router.push("/employee/dashboard");
       } else {
         alert("Login failed")
         console.log("Login failed", response.data);
