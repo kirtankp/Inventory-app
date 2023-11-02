@@ -12,11 +12,17 @@ export default function Home() {
     email: ''
   });
 
+  const [otpData, setOtpData] = useState('');
+
   const [showOtpForm, setShowOtpForm] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleOTPChange = (e) => {
+    setOtpData(e.target.value)
   };
 
   const handleSubmit = async (e) => {
@@ -26,7 +32,24 @@ export default function Home() {
     try {
       const response = await axios.post("http://localhost:5001/user/login", formData);
       if (response.data['user']) {
-        localStorage.setItem('token', response.data['user'])
+        setShowOtpForm(true);
+        console.log("Login success", response.data);
+      } else {
+        alert("Login failed")
+        console.log("Login failed", response.data);
+      }
+    } catch (error) {
+      console.log("Login failed", error.message);
+    }
+    console.log(formData)
+  };
+
+  const handleOTPSubmit = async (e) => {
+    e.preventDefault();
+    // Handle login logic here (e.g., send data to the server)
+    try {
+      const response = await axios.post("http://localhost:5001/user/otp", otpData);
+      if (response.data['user']) {
         console.log("Login success", response.data);
         router.push("/dashboard");
       } else {
@@ -36,7 +59,7 @@ export default function Home() {
     } catch (error) {
       console.log("Login failed", error.message);
     }
-    console.log(formData)
+    console.log(otpData)
   };
 
   return (
@@ -70,11 +93,17 @@ export default function Home() {
         </button>
       </form>
     ) : (
-      <>
+      <form onSubmit={handleOTPSubmit}>
         <p>Enter OTP sent to your email:</p>
-        <input type="text" placeholder="OTP" className="w-full p-2 my-2" />
+        <input 
+          type="text" 
+          name='otp'
+          placeholder="OTP" 
+          onChange={handleOTPChange}
+          value={otpData}
+          className="w-full p-2 my-2" />
         <button className="w-full bg-blue-500 text-white p-2 rounded my-2">Submit</button>
-      </>
+      </form>
     )
   )
 }
