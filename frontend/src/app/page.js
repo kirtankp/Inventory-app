@@ -55,7 +55,7 @@ export default function Home() {
     otpData.role = formData.role;
     try {
       const response = await axios.post("http://localhost:5000/user/otp", otpData);
-      if (response.data['role'] === 'admin') {
+      if (response.data['role'] === 'store') {
         console.log("Login success", response.data);
         router.push("/admin/dashboard");
       }else if (response.data['role'] === 'employee') {
