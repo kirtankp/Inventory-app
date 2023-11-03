@@ -12,7 +12,9 @@ export default function Home() {
     email: ''
   });
 
-  const [otpData, setOtpData] = useState('');
+  const [otpData, setOtpData] = useState({
+    otp: ''
+  });
 
   const [showOtpForm, setShowOtpForm] = useState(false);
 
@@ -22,7 +24,8 @@ export default function Home() {
   };
 
   const handleOTPChange = (e) => {
-    setOtpData(e.target.value)
+    const { name, value } = e.target;
+    setOtpData({ ...otpData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
@@ -47,6 +50,7 @@ export default function Home() {
   const handleOTPSubmit = async (e) => {
     e.preventDefault();
     // Handle login logic here (e.g., send data to the server)
+    otpData.email = formData.email;
     try {
       const response = await axios.post("http://localhost:5001/user/otp", otpData);
       if (response.data['role'] === 'admin') {
@@ -103,7 +107,7 @@ export default function Home() {
           name='otp'
           placeholder="OTP" 
           onChange={handleOTPChange}
-          value={otpData}
+          value={otpData.otp}
           className="w-full p-2 my-2" />
         <button className="w-full bg-blue-500 text-white p-2 rounded my-2">Submit</button>
       </form>
