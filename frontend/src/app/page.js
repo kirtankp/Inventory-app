@@ -33,8 +33,9 @@ export default function Home() {
     e.preventDefault();
     // Handle login logic here (e.g., send data to the server)
     try {
-      const response = await axios.post("http://localhost:5001/user/login", formData);
+      const response = await axios.post("http://localhost:5000/user/login", formData);
       if (response.data['user']) {
+        localStorage.setItem('token', response.data['user'])
         setShowOtpForm(true);
         console.log("Login success", response.data);
       } else {
@@ -51,8 +52,9 @@ export default function Home() {
     e.preventDefault();
     // Handle login logic here (e.g., send data to the server)
     otpData.email = formData.email;
+    otpData.role = formData.role;
     try {
-      const response = await axios.post("http://localhost:5001/user/otp", otpData);
+      const response = await axios.post("http://localhost:5000/user/otp", otpData);
       if (response.data['role'] === 'admin') {
         console.log("Login success", response.data);
         router.push("/admin/dashboard");
