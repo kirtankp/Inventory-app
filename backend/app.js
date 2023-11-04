@@ -6,6 +6,7 @@ const otpGenerator = require('otp-generator')
 const app = express()
 const cors = require('cors')
 const User = require('./Models/Users')
+const Item = require('./Models/Items')
 require('dotenv').config()
 const port = process.env.PORT
 
@@ -99,7 +100,7 @@ app.post('/user/login', async (req, res) => {
         res.json({ message: 'error' })
     }
 })
-//
+//otp
 app.post('/user/otp', async (req, res) => {
     try {
         const user = req.body;
@@ -113,7 +114,16 @@ app.post('/user/otp', async (req, res) => {
         res.json({ message: 'error' })
     }
 })
-
+//store admin addItems
+app.post('/admin/addItems', async (req, res) => {
+    try {
+        const item = new Item(req.body);
+        await item.save();
+        res.status(201).json({ msg: 'Item Added', item });
+    } catch (error) {
+        res.json(error)
+    }
+})
 app.listen(port, () => {
     console.log('app is running on ' + port)
 })
