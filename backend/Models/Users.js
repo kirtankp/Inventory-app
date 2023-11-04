@@ -11,6 +11,17 @@ const userSchema = new mongoose.Schema({
     },
     otp: {
         type: String
+    },fname: {
+        type: String,
+        required: true
+    },
+    fname: {
+        type: String,
+        required: true
+    },
+    branch: {
+        type: String,
+        required: true
     }
 },
     //userData is the collection name in the dataBase

@@ -99,7 +99,7 @@ app.post('/user/login', async (req, res) => {
         res.json({ message: 'error' })
     }
 })
-
+//
 app.post('/user/otp', async (req, res) => {
     try {
         const user = req.body;
